@@ -1,0 +1,23 @@
+[
+  {
+    "name": "Montserrat",
+    "url": "https://your-cdn.com/fonts/montserrat.woff2",
+    "tags": ["sans-serif"],
+    "supports": ["latin"],
+    "weights": ["400", "700"]
+  },
+  {
+    "name": "Playfair Display",
+    "url": "https://your-cdn.com/fonts/playfair-display.woff2",
+    "tags": ["serif", "display"],
+    "supports": ["latin"],
+    "weights": ["400", "700"]
+  },
+  {
+    "name": "Roboto Mono",
+    "url": "https://your-cdn.com/fonts/roboto-mono.woff2",
+    "tags": ["monospace"],
+    "supports": ["latin", "cyrillic"],
+    "weights": ["400", "700"]
+  }
+]

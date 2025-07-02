@@ -96,4 +96,4 @@ This is a static site. Deploy `dist/` to Netlify, Vercel, GitHub Pages, or any s
 
 ## 📄 License
 
-MIT License — Exsurgo Strong & Fit / Leonardo Design Studio
+MIT License 

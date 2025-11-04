@@ -34,17 +34,17 @@
     </div>
 
     <!-- Action Buttons -->
-    <div class="flex justify-end gap-2 pt-3 border-t border-gray-200 mt-auto">
-      <button class="px-3 py-1.5 border border-gray-300 rounded bg-white text-gray-700 hover:bg-gray-50 transition-colors font-medium text-sm" @click="togglePreview" title="Preview">
+    <div class="flex justify-end items-center gap-2 pt-3 border-t border-gray-200 mt-auto">
+      <button class="px-3 py-1.5 border border-gray-300 rounded bg-white text-gray-700 hover:bg-gray-50 transition-colors font-medium text-sm flex items-center justify-center" @click="togglePreview" title="Preview">
         Aa
       </button>
-      <button @click="copyFont(font)" class="p-1.5 border border-gray-300 rounded bg-white text-gray-600 hover:bg-gray-50 transition-colors" title="Copy">
+      <button @click="copyFont(font)" class="p-1.5 border border-gray-300 rounded bg-white text-gray-600 hover:bg-gray-50 transition-colors flex items-center justify-center" title="Copy">
         <span class="material-symbols-outlined text-lg">content_copy</span>
       </button>
-      <a :href="font.url" :download="getCustomFilename(font)" class="p-1.5 border border-gray-300 rounded bg-white text-gray-600 hover:bg-gray-50 transition-colors" title="Download">
+      <a :href="font.url" :download="getCustomFilename(font)" class="p-1.5 border border-gray-300 rounded bg-white text-gray-600 hover:bg-gray-50 transition-colors flex items-center justify-center" title="Download">
         <span class="material-symbols-outlined text-lg">download</span>
       </a>
-      <button @click="toggleCompare(font)" class="p-1.5 border border-gray-300 rounded bg-white text-gray-600 hover:bg-gray-50 transition-colors" :class="{ 'border-indigo-500 bg-indigo-50 text-indigo-700': isInComparison }" :title="isInComparison ? 'Remove from comparison' : 'Add to comparison'">
+      <button @click="toggleCompare(font)" class="p-1.5 border border-gray-300 rounded bg-white text-gray-600 hover:bg-gray-50 transition-colors flex items-center justify-center" :class="{ 'border-indigo-500 bg-indigo-50 text-indigo-700': isInComparison }" :title="isInComparison ? 'Remove from comparison' : 'Add to comparison'">
         <span class="material-symbols-outlined text-lg">{{ isInComparison ? 'remove_circle' : 'compare' }}</span>
       </button>
     </div>

@@ -5,8 +5,15 @@
       <p class="text-gray-600">{{ comparisonFonts.length }} fonts selected for comparison</p>
     </div>
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-6">
-      <div v-for="font in comparisonFonts" :key="font.name" class="bg-white rounded-lg shadow-md border border-gray-200 p-6" :style="{ fontFamily: font.name }">
-        <div class="flex justify-between items-start mb-4 pb-4 border-b border-gray-200">
+      <div v-for="font in comparisonFonts" :key="font.name" class="bg-white rounded-lg shadow-md border border-gray-200 p-6 relative" :style="{ fontFamily: `'${font.name}', sans-serif` }">
+        <button 
+          @click="toggleCompare(font)" 
+          class="absolute top-4 right-4 p-1.5 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+          title="Remove from comparison"
+        >
+          <span class="material-symbols-outlined text-xl">close</span>
+        </button>
+        <div class="flex justify-between items-start mb-4 pb-4 border-b border-gray-200 pr-10">
           <h3 class="text-lg font-semibold text-gray-900">{{ font.name }}</h3>
           <span class="px-2 py-1 text-xs bg-gray-100 text-gray-600 rounded">{{ font.tags[0] }}</span>
         </div>
@@ -24,5 +31,5 @@
 </template>
 
 <script setup>
-defineProps(['comparisonFonts', 'sampleText'])
+defineProps(['comparisonFonts', 'sampleText', 'toggleCompare'])
 </script>

@@ -53,6 +53,7 @@
       v-if="comparisonFonts.length > 0"
       :comparisonFonts="comparisonFonts"
       :sampleText="sampleText"
+      :toggleCompare="toggleCompare"
     />
 
     <!-- Font Grid -->
@@ -82,6 +83,7 @@
           :bgColor="bgColor"
           :sampleText="sampleText"
           :selected="isFavorite(font)"
+          :isInComparison="isInComparison(font)"
           :copyFont="copyFont"
           :getCustomFilename="getCustomFilename"
           :toggleFavorite="toggleFavorite"
@@ -140,7 +142,7 @@
         
         <div class="p-6">
           <div class="mb-6 space-y-4">
-            <div v-for="weight in (previewFont.weights || ['400'])" :key="weight" class="p-4 bg-gray-50 rounded-lg border border-gray-200" :style="{ fontFamily: previewFont.name, fontWeight: weight }">
+            <div v-for="weight in (previewFont.weights || ['400'])" :key="weight" class="p-4 bg-gray-50 rounded-lg border border-gray-200" :style="{ fontFamily: `'${previewFont.name}', sans-serif`, fontWeight: weight }">
               <div class="text-xs font-semibold text-gray-600 uppercase tracking-wide mb-2">{{ getWeightName(weight) }} ({{ weight }})</div>
               <div class="text-lg text-gray-900 leading-relaxed">The quick brown fox jumps over the lazy dog.</div>
             </div>
@@ -151,9 +153,9 @@
               <span class="material-symbols-outlined">{{ isFavorite(previewFont) ? 'favorite' : 'favorite_border' }}</span>
               {{ isFavorite(previewFont) ? 'Remove from Favorites' : 'Add to Favorites' }}
             </button>
-            <button @click="toggleCompare(previewFont)" class="flex-1 flex items-center justify-center gap-2 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
-              <span class="material-symbols-outlined">compare</span>
-              Add to Comparison
+            <button @click="toggleCompare(previewFont)" class="flex-1 flex items-center justify-center gap-2 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors" :class="{ 'bg-indigo-50 border-indigo-500 text-indigo-700': isInComparison(previewFont) }">
+              <span class="material-symbols-outlined">{{ isInComparison(previewFont) ? 'remove_circle' : 'compare' }}</span>
+              {{ isInComparison(previewFont) ? 'Remove from Comparison' : 'Add to Comparison' }}
             </button>
           </div>
         </div>
@@ -225,6 +227,10 @@ function toggleFavorite(font) {
 
 function isFavorite(font) {
   return favorites.value.includes(font.name)
+}
+
+function isInComparison(font) {
+  return compareList.value.includes(font.name)
 }
 
 function toggleCompare(font) {

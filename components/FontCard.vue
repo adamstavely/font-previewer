@@ -12,7 +12,7 @@
     </div>
 
     <!-- Font Preview -->
-    <div class="my-3 p-4 bg-gray-50 rounded border border-gray-200 text-lg leading-relaxed min-h-[60px] flex items-center text-gray-900" :style="{ fontFamily: font.name, fontSize: fontSize + 'px', fontWeight: fontWeight, lineHeight: lineHeight, letterSpacing: letterSpacing + 'px', color: textColor, backgroundColor: bgColor }">
+    <div class="my-3 p-4 bg-gray-50 rounded border border-gray-200 text-lg leading-relaxed min-h-[60px] flex items-center text-gray-900" :style="{ fontFamily: `'${font.name}', sans-serif`, fontSize: fontSize + 'px', fontWeight: fontWeight, lineHeight: lineHeight, letterSpacing: letterSpacing + 'px', color: textColor, backgroundColor: bgColor }">
       {{ sampleText }}
     </div>
 
@@ -44,8 +44,8 @@
       <a :href="font.url" :download="getCustomFilename(font)" class="p-1.5 border border-gray-300 rounded bg-white text-gray-600 hover:bg-gray-50 transition-colors" title="Download">
         <span class="material-symbols-outlined text-lg">download</span>
       </a>
-      <button @click="toggleCompare(font)" class="p-1.5 border border-gray-300 rounded bg-white text-gray-600 hover:bg-gray-50 transition-colors" title="Compare">
-        <span class="material-symbols-outlined text-lg">compare</span>
+      <button @click="toggleCompare(font)" class="p-1.5 border border-gray-300 rounded bg-white text-gray-600 hover:bg-gray-50 transition-colors" :class="{ 'border-indigo-500 bg-indigo-50 text-indigo-700': isInComparison }" :title="isInComparison ? 'Remove from comparison' : 'Add to comparison'">
+        <span class="material-symbols-outlined text-lg">{{ isInComparison ? 'remove_circle' : 'compare' }}</span>
       </button>
     </div>
   </div>
@@ -54,7 +54,7 @@
 <script setup>
 const props = defineProps([
   'font', 'fontSize', 'fontWeight', 'lineHeight', 'letterSpacing',
-  'textColor', 'bgColor', 'sampleText', 'selected',
+  'textColor', 'bgColor', 'sampleText', 'selected', 'isInComparison',
   'copyFont', 'getCustomFilename', 'toggleFavorite', 'toggleCompare', 'getContrastLevel'
 ])
 

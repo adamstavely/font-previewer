@@ -1,34 +1,32 @@
 <template>
-  <div class="font-card" :class="{ selected }">
+  <div class="bg-white rounded-lg shadow-md border border-gray-200 p-4 hover:shadow-lg transition-shadow flex flex-col h-full" :class="{ 'border-indigo-500 bg-indigo-50': selected }">
     <!-- Font Header -->
-    <div class="font-header">
-      <div class="font-title">
-        <h3>{{ font.name }}</h3>
-        <span class="font-meta">{{ font.weights?.length || 1 }} styles</span>
+    <div class="flex justify-between items-start mb-3">
+      <div>
+        <h3 class="text-base font-semibold text-gray-900 mb-1">{{ font.name }}</h3>
+        <span class="text-xs text-gray-500">{{ font.weights?.length || 1 }} styles</span>
       </div>
-      <div class="font-actions">
-        <button @click="toggleFavorite(font)" class="favorite-btn" :class="{ active: selected }" title="Add to favorites">
-          <span class="material-symbols-outlined">{{ selected ? 'favorite' : 'favorite_border' }}</span>
-        </button>
-      </div>
+      <button @click="toggleFavorite(font)" class="p-1 text-gray-400 hover:text-red-500 transition-colors" :class="{ 'text-red-500': selected }" title="Add to favorites">
+        <span class="material-symbols-outlined text-xl">{{ selected ? 'favorite' : 'favorite_border' }}</span>
+      </button>
     </div>
 
     <!-- Font Preview -->
-    <div class="font-preview" :style="{ fontFamily: font.name }">
+    <div class="my-3 p-4 bg-gray-50 rounded border border-gray-200 text-lg leading-relaxed min-h-[60px] flex items-center text-gray-900" :style="{ fontFamily: font.name, fontSize: fontSize + 'px', fontWeight: fontWeight, lineHeight: lineHeight, letterSpacing: letterSpacing + 'px', color: textColor, backgroundColor: bgColor }">
       {{ sampleText }}
     </div>
 
     <!-- Font Details -->
-    <div class="font-details">
-      <div class="font-info">
-        <span class="script-support">{{ font.supports?.join(', ') || 'Latin' }}</span>
+    <div class="mb-3 flex-1">
+      <div class="flex gap-3 mb-2 text-xs">
+        <span class="text-gray-500">{{ font.supports?.join(', ') || 'Latin' }}</span>
       </div>
       
       <!-- Pairing Suggestions -->
-      <div v-if="font.pairsWellWith?.length" class="pairing-suggestions">
-        <span class="pairing-label">Pairs with:</span>
-        <div class="pairing-tags">
-          <button v-for="pair in font.pairsWellWith.slice(0, 2)" :key="pair" class="pairing-tag" @click="selectPairing(pair)">
+      <div v-if="font.pairsWellWith?.length" class="mt-2">
+        <span class="text-xs text-gray-500 block mb-1">Pairs with:</span>
+        <div class="flex gap-1 flex-wrap">
+          <button v-for="pair in font.pairsWellWith.slice(0, 2)" :key="pair" class="px-2 py-0.5 text-xs bg-indigo-50 text-indigo-700 rounded border border-indigo-200 hover:bg-indigo-100 transition-colors" @click="selectPairing(pair)">
             {{ pair }}
           </button>
         </div>
@@ -36,18 +34,18 @@
     </div>
 
     <!-- Action Buttons -->
-    <div class="card-actions">
-      <button class="preview-btn" @click="togglePreview" title="Preview">
-        <span class="preview-text">Aa</span>
+    <div class="flex justify-end gap-2 pt-3 border-t border-gray-200 mt-auto">
+      <button class="px-3 py-1.5 border border-gray-300 rounded bg-white text-gray-700 hover:bg-gray-50 transition-colors font-medium text-sm" @click="togglePreview" title="Preview">
+        Aa
       </button>
-      <button @click="copyFont(font)" class="action-btn" title="Copy">
-        <span class="material-symbols-outlined">content_copy</span>
+      <button @click="copyFont(font)" class="p-1.5 border border-gray-300 rounded bg-white text-gray-600 hover:bg-gray-50 transition-colors" title="Copy">
+        <span class="material-symbols-outlined text-lg">content_copy</span>
       </button>
-      <a :href="font.url" :download="getCustomFilename(font)" class="action-btn" title="Download">
-        <span class="material-symbols-outlined">download</span>
+      <a :href="font.url" :download="getCustomFilename(font)" class="p-1.5 border border-gray-300 rounded bg-white text-gray-600 hover:bg-gray-50 transition-colors" title="Download">
+        <span class="material-symbols-outlined text-lg">download</span>
       </a>
-      <button @click="toggleCompare(font)" class="action-btn" title="Compare">
-        <span class="material-symbols-outlined">compare</span>
+      <button @click="toggleCompare(font)" class="p-1.5 border border-gray-300 rounded bg-white text-gray-600 hover:bg-gray-50 transition-colors" title="Compare">
+        <span class="material-symbols-outlined text-lg">compare</span>
       </button>
     </div>
   </div>

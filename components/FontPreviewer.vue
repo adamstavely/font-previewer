@@ -1,18 +1,29 @@
 <template>
-  <div :class="['font-previewer', theme, { mobileMode }]">
-    <!-- Google Fonts-style Header -->
-    <header class="app-header">
-      <div class="header-content">
-        <div class="logo-section">
-          <h1 class="logo">Font Previewer</h1>
-          <p class="tagline">Making the web more beautiful, fast, and open through great typography</p>
-        </div>
-        <div class="header-stats">
-          <span class="font-count">{{ filteredFonts.length }} families</span>
-          <button v-if="favorites.length > 0 || comparisonFonts.length > 0" @click="showExportModal = true" class="export-btn-header">
-            <span class="material-symbols-outlined">download</span>
-            Export ({{ favorites.length + comparisonFonts.length }})
-          </button>
+  <div class="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-indigo-50">
+    <!-- Header -->
+    <header class="bg-white shadow-sm border-b border-gray-200">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <div class="flex items-center justify-between">
+          <div>
+            <h1 class="text-3xl font-bold text-gray-900 flex items-center gap-3">
+              <span class="material-symbols-outlined text-indigo-600">text_fields</span>
+              Font Previewer
+            </h1>
+            <p class="mt-2 text-gray-600">
+              Making the web more beautiful, fast, and open through great typography
+            </p>
+          </div>
+          <div class="flex items-center gap-4">
+            <span class="text-sm text-gray-600">{{ filteredFonts.length }} families</span>
+            <button 
+              v-if="favorites.length > 0 || comparisonFonts.length > 0" 
+              @click="showExportModal = true" 
+              class="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
+            >
+              <span class="material-symbols-outlined text-lg">download</span>
+              Export ({{ favorites.length + comparisonFonts.length }})
+            </button>
+          </div>
         </div>
       </div>
     </header>
@@ -45,21 +56,20 @@
     />
 
     <!-- Font Grid -->
-    <main class="main-content">
-      <div class="results-header" v-if="search || selectedTag || selectedScript || selectedWeight">
-        <h2>Search Results</h2>
-        <p>{{ filteredFonts.length }} font families found</p>
-        <div class="active-filters" v-if="search || selectedTag || selectedScript || selectedWeight">
-          <span class="filter-label">Active filters:</span>
-          <span v-if="search" class="filter-tag">Search: "{{ search }}"</span>
-          <span v-if="selectedTag" class="filter-tag">Category: {{ selectedTag }}</span>
-          <span v-if="selectedScript" class="filter-tag">Script: {{ selectedScript }}</span>
-          <span v-if="selectedWeight" class="filter-tag">Weight: {{ selectedWeight }}</span>
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div v-if="search || selectedTag || selectedScript || selectedWeight" class="mb-6 bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+        <h2 class="text-2xl font-bold text-gray-900 mb-2">Search Results</h2>
+        <p class="text-gray-600 mb-4">{{ filteredFonts.length }} font families found</p>
+        <div v-if="search || selectedTag || selectedScript || selectedWeight" class="flex flex-wrap items-center gap-2">
+          <span class="text-sm font-medium text-gray-700">Active filters:</span>
+          <span v-if="search" class="px-3 py-1 text-sm bg-indigo-50 text-indigo-700 rounded-lg">Search: "{{ search }}"</span>
+          <span v-if="selectedTag" class="px-3 py-1 text-sm bg-indigo-50 text-indigo-700 rounded-lg">Category: {{ selectedTag }}</span>
+          <span v-if="selectedScript" class="px-3 py-1 text-sm bg-indigo-50 text-indigo-700 rounded-lg">Script: {{ selectedScript }}</span>
+          <span v-if="selectedWeight" class="px-3 py-1 text-sm bg-indigo-50 text-indigo-700 rounded-lg">Weight: {{ selectedWeight }}</span>
         </div>
       </div>
       
-      
-      <div class="font-grid">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
         <FontCard
           v-for="font in filteredFonts"
           :key="font.name"
@@ -83,33 +93,33 @@
     </main>
 
     <!-- Simple Export Modal -->
-    <div v-if="showExportModal" class="modal-overlay" @click="showExportModal = false">
-      <div class="modal-content" @click.stop>
-        <div class="modal-header">
-          <h3>Export Fonts</h3>
-          <button @click="showExportModal = false" class="close-btn">
-            <span class="material-symbols-outlined">close</span>
+    <div v-if="showExportModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm" @click="showExportModal = false">
+      <div class="bg-white rounded-lg shadow-xl max-w-md w-full mx-4 relative" @click.stop>
+        <div class="flex items-center justify-between p-6 border-b border-gray-200">
+          <h3 class="text-xl font-bold text-gray-900">Export Fonts</h3>
+          <button @click="showExportModal = false" class="p-2 hover:bg-gray-100 rounded-lg transition-colors">
+            <span class="material-symbols-outlined text-gray-600">close</span>
           </button>
         </div>
         
-        <div class="modal-body">
-          <div v-if="favorites.length > 0" class="export-group">
-            <h4>Favorites ({{ favorites.length }})</h4>
-            <div class="font-list">
-              <span v-for="font in favorites" :key="font.name" class="font-item">{{ font.name }}</span>
+        <div class="p-6">
+          <div v-if="favorites.length > 0" class="mb-6">
+            <h4 class="text-lg font-semibold text-gray-900 mb-3">Favorites ({{ favorites.length }})</h4>
+            <div class="flex flex-wrap gap-2 mb-4">
+              <span v-for="font in favorites" :key="font.name" class="px-3 py-1 text-sm bg-gray-100 text-gray-700 rounded-lg">{{ font.name }}</span>
             </div>
-            <button @click="exportFavorites" class="export-btn">
+            <button @click="exportFavorites" class="w-full flex items-center justify-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors">
               <span class="material-symbols-outlined">download</span>
               Export Favorites
             </button>
           </div>
           
-          <div v-if="comparisonFonts.length > 0" class="export-group">
-            <h4>Comparison ({{ comparisonFonts.length }})</h4>
-            <div class="font-list">
-              <span v-for="font in comparisonFonts" :key="font.name" class="font-item">{{ font.name }}</span>
+          <div v-if="comparisonFonts.length > 0">
+            <h4 class="text-lg font-semibold text-gray-900 mb-3">Comparison ({{ comparisonFonts.length }})</h4>
+            <div class="flex flex-wrap gap-2 mb-4">
+              <span v-for="font in comparisonFonts" :key="font.name" class="px-3 py-1 text-sm bg-gray-100 text-gray-700 rounded-lg">{{ font.name }}</span>
             </div>
-            <button @click="exportComparison" class="export-btn">
+            <button @click="exportComparison" class="w-full flex items-center justify-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors">
               <span class="material-symbols-outlined">compare</span>
               Export Comparison
             </button>
@@ -119,29 +129,29 @@
     </div>
 
     <!-- Quick Preview Modal -->
-    <div v-if="showQuickPreview && previewFont" class="modal-overlay" @click="showQuickPreview = false">
-      <div class="preview-modal" @click.stop>
-        <div class="preview-header">
-          <h3>{{ previewFont.name }}</h3>
-          <button @click="showQuickPreview = false" class="close-btn">
-            <span class="material-symbols-outlined">close</span>
+    <div v-if="showQuickPreview && previewFont" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm" @click="showQuickPreview = false">
+      <div class="bg-white rounded-lg shadow-xl max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto" @click.stop>
+        <div class="flex items-center justify-between p-6 border-b border-gray-200">
+          <h3 class="text-xl font-bold text-gray-900">{{ previewFont.name }}</h3>
+          <button @click="showQuickPreview = false" class="p-2 hover:bg-gray-100 rounded-lg transition-colors">
+            <span class="material-symbols-outlined text-gray-600">close</span>
           </button>
         </div>
         
-        <div class="preview-body">
-          <div class="preview-weights">
-            <div v-for="weight in (previewFont.weights || ['400'])" :key="weight" class="weight-preview" :style="{ fontFamily: previewFont.name, fontWeight: weight }">
-              <div class="weight-label">{{ getWeightName(weight) }} ({{ weight }})</div>
-              <div class="weight-text">The quick brown fox jumps over the lazy dog.</div>
+        <div class="p-6">
+          <div class="mb-6 space-y-4">
+            <div v-for="weight in (previewFont.weights || ['400'])" :key="weight" class="p-4 bg-gray-50 rounded-lg border border-gray-200" :style="{ fontFamily: previewFont.name, fontWeight: weight }">
+              <div class="text-xs font-semibold text-gray-600 uppercase tracking-wide mb-2">{{ getWeightName(weight) }} ({{ weight }})</div>
+              <div class="text-lg text-gray-900 leading-relaxed">The quick brown fox jumps over the lazy dog.</div>
             </div>
           </div>
           
-          <div class="preview-actions">
-            <button @click="toggleFavorite(previewFont)" class="action-btn" :class="{ active: isFavorite(previewFont) }">
+          <div class="flex gap-3 pt-4 border-t border-gray-200">
+            <button @click="toggleFavorite(previewFont)" class="flex-1 flex items-center justify-center gap-2 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors" :class="{ 'bg-indigo-50 border-indigo-500 text-indigo-700': isFavorite(previewFont) }">
               <span class="material-symbols-outlined">{{ isFavorite(previewFont) ? 'favorite' : 'favorite_border' }}</span>
               {{ isFavorite(previewFont) ? 'Remove from Favorites' : 'Add to Favorites' }}
             </button>
-            <button @click="toggleCompare(previewFont)" class="action-btn">
+            <button @click="toggleCompare(previewFont)" class="flex-1 flex items-center justify-center gap-2 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
               <span class="material-symbols-outlined">compare</span>
               Add to Comparison
             </button>

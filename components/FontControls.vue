@@ -61,141 +61,143 @@
           <div class="flex-1">
             <div class="mb-3">
               <h3 class="text-sm font-semibold text-gray-700 mb-4">Typography Controls</h3>
-              <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <!-- Size -->
-                <div class="flex flex-col gap-2">
-                  <div class="flex items-center justify-between">
-                    <label class="text-xs font-medium text-gray-600">Size</label>
-                    <span class="text-xs text-gray-500">{{ fontSize }}px</span>
+              <div class="grid grid-cols-3 gap-4">
+                <!-- Size and Weight Stacked -->
+                <div class="flex flex-col gap-4">
+                  <!-- Size -->
+                  <div class="flex flex-col gap-2">
+                    <div class="flex items-center justify-between">
+                      <label class="text-xs font-medium text-gray-600">Size</label>
+                      <span class="text-xs text-gray-500">{{ fontSize }}px</span>
+                    </div>
+                    <input 
+                      type="range" 
+                      :value="fontSize" 
+                      @input="$emit('update:fontSize', Number($event.target.value))" 
+                      min="12" 
+                      max="72" 
+                      class="w-full h-1.5 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-indigo-600"
+                    />
                   </div>
-                  <input 
-                    type="range" 
-                    :value="fontSize" 
-                    @input="$emit('update:fontSize', Number($event.target.value))" 
-                    min="12" 
-                    max="72" 
-                    class="w-full h-1.5 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-indigo-600"
-                  />
-                </div>
-
-                <!-- Weight -->
-                <div class="flex flex-col gap-2">
-                  <label class="text-xs font-medium text-gray-600">Weight</label>
-                  <select :value="fontWeight" @change="$emit('update:fontWeight', Number($event.target.value))" class="w-full px-2.5 py-1.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-white">
-                    <option value="100">Thin (100)</option>
-                    <option value="200">Extra Light (200)</option>
-                    <option value="300">Light (300)</option>
-                    <option value="400">Regular (400)</option>
-                    <option value="500">Medium (500)</option>
-                    <option value="600">Semi-Bold (600)</option>
-                    <option value="700">Bold (700)</option>
-                    <option value="800">Extra Bold (800)</option>
-                    <option value="900">Black (900)</option>
-                  </select>
-                </div>
-
-                <!-- Line Height -->
-                <div class="flex flex-col gap-2">
-                  <div class="flex items-center justify-between">
-                    <label class="text-xs font-medium text-gray-600">Line Height</label>
-                    <span class="text-xs text-gray-500">{{ lineHeight }}</span>
+                  <!-- Weight -->
+                  <div class="flex flex-col gap-2">
+                    <label class="text-xs font-medium text-gray-600">Weight</label>
+                    <select :value="fontWeight" @change="$emit('update:fontWeight', Number($event.target.value))" class="w-full px-2.5 py-1.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-white">
+                      <option value="100">Thin (100)</option>
+                      <option value="200">Extra Light (200)</option>
+                      <option value="300">Light (300)</option>
+                      <option value="400">Regular (400)</option>
+                      <option value="500">Medium (500)</option>
+                      <option value="600">Semi-Bold (600)</option>
+                      <option value="700">Bold (700)</option>
+                      <option value="800">Extra Bold (800)</option>
+                      <option value="900">Black (900)</option>
+                    </select>
                   </div>
-                  <input 
-                    type="range" 
-                    :value="lineHeight" 
-                    @input="$emit('update:lineHeight', Number($event.target.value))" 
-                    min="1" 
-                    max="2" 
-                    step="0.1" 
-                    class="w-full h-1.5 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-indigo-600"
-                  />
                 </div>
 
-                <!-- Letter Spacing -->
-                <div class="flex flex-col gap-2">
-                  <div class="flex items-center justify-between">
-                    <label class="text-xs font-medium text-gray-600">Letter Spacing</label>
-                    <span class="text-xs text-gray-500">{{ letterSpacing }}px</span>
+                <!-- Line Height and Letter Spacing Stacked -->
+                <div class="flex flex-col gap-4">
+                  <!-- Line Height -->
+                  <div class="flex flex-col gap-2">
+                    <div class="flex items-center justify-between">
+                      <label class="text-xs font-medium text-gray-600">Line Height</label>
+                      <span class="text-xs text-gray-500">{{ lineHeight }}</span>
+                    </div>
+                    <input 
+                      type="range" 
+                      :value="lineHeight" 
+                      @input="$emit('update:lineHeight', Number($event.target.value))" 
+                      min="1" 
+                      max="2" 
+                      step="0.1" 
+                      class="w-full h-1.5 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-indigo-600"
+                    />
                   </div>
-                  <input 
-                    type="range" 
-                    :value="letterSpacing" 
-                    @input="$emit('update:letterSpacing', Number($event.target.value))" 
-                    min="-2" 
-                    max="5" 
-                    step="0.1" 
-                    class="w-full h-1.5 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-indigo-600"
-                  />
-                </div>
-              </div>
-            </div>
-
-            <!-- Color and Mode Controls -->
-            <div class="mt-4 pt-4 border-t border-gray-100">
-              <div class="flex items-start gap-4">
-                <!-- Text Color -->
-                <div class="flex flex-col gap-2">
-                  <label class="text-xs font-medium text-gray-600">Text Color</label>
-                  <div class="relative">
-                    <button 
-                      ref="textColorButtonRef"
-                      @click.stop="openColorPicker('text', $event)"
-                      class="relative w-12 h-12 rounded-lg overflow-hidden shadow-sm border border-gray-300 hover:border-gray-400 transition-colors cursor-pointer block"
-                      :style="{ backgroundColor: textColor }"
-                    >
-                      <div class="absolute inset-0 border border-gray-200 rounded-lg pointer-events-none"></div>
-                    </button>
-                    
-                    <!-- Color Picker Popup -->
-                    <ColorPickerPopup
-                      v-if="activeColorPicker === 'text'"
-                      :initial-color="textColor"
-                      @apply="(hex) => { emit('update:textColor', hex); activeColorPicker = null; }"
-                      @cancel="activeColorPicker = null"
-                      :picker-style="textColorPickerStyle"
+                  <!-- Letter Spacing -->
+                  <div class="flex flex-col gap-2">
+                    <div class="flex items-center justify-between">
+                      <label class="text-xs font-medium text-gray-600">Letter Spacing</label>
+                      <span class="text-xs text-gray-500">{{ letterSpacing }}px</span>
+                    </div>
+                    <input 
+                      type="range" 
+                      :value="letterSpacing" 
+                      @input="$emit('update:letterSpacing', Number($event.target.value))" 
+                      min="-2" 
+                      max="5" 
+                      step="0.1" 
+                      class="w-full h-1.5 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-indigo-600"
                     />
                   </div>
                 </div>
-                
-                <!-- Background -->
-                <div class="flex flex-col gap-2">
-                  <label class="text-xs font-medium text-gray-600">Background</label>
-                  <div class="relative">
-                    <button 
-                      ref="bgColorButtonRef"
-                      @click.stop="openColorPicker('bg', $event)"
-                      class="relative w-12 h-12 rounded-lg overflow-hidden shadow-sm border border-gray-300 hover:border-gray-400 transition-colors cursor-pointer block"
-                      :style="{ backgroundColor: bgColor }"
-                    >
-                      <div class="absolute inset-0 border border-gray-200 rounded-lg pointer-events-none"></div>
-                    </button>
-                    
-                    <!-- Color Picker Popup -->
-                    <ColorPickerPopup
-                      v-if="activeColorPicker === 'bg'"
-                      :initial-color="bgColor"
-                      @apply="(hex) => { emit('update:bgColor', hex); activeColorPicker = null; }"
-                      @cancel="activeColorPicker = null"
-                      :picker-style="bgColorPickerStyle"
-                    />
+
+                <!-- Color and Mode Controls -->
+                <div class="flex items-start gap-4 pl-4 border-l border-gray-200 justify-between">
+                  <!-- Text Color -->
+                  <div class="flex flex-col gap-2">
+                    <label class="text-xs font-medium text-gray-600">Text Color</label>
+                    <div class="relative">
+                      <button 
+                        ref="textColorButtonRef"
+                        @click.stop="openColorPicker('text', $event)"
+                        class="relative w-12 h-12 rounded-lg overflow-hidden shadow-sm border border-gray-300 hover:border-gray-400 transition-colors cursor-pointer block"
+                        :style="{ backgroundColor: textColor }"
+                      >
+                        <div class="absolute inset-0 border border-gray-200 rounded-lg pointer-events-none"></div>
+                      </button>
+                      
+                      <!-- Color Picker Popup -->
+                      <ColorPickerPopup
+                        v-if="activeColorPicker === 'text'"
+                        :initial-color="textColor"
+                        @apply="(hex) => { emit('update:textColor', hex); activeColorPicker = null; }"
+                        @cancel="activeColorPicker = null"
+                        :picker-style="textColorPickerStyle"
+                      />
+                    </div>
                   </div>
-                </div>
-                
-                <!-- Dark Mode -->
-                <div class="flex flex-col gap-2">
-                  <label class="text-xs font-medium text-gray-600">Dark Mode</label>
-                  <button
-                    @click="toggleDarkMode"
-                    class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                    :class="isDarkMode ? 'bg-indigo-600' : 'bg-gray-300'"
-                    role="switch"
-                    :aria-checked="isDarkMode"
-                  >
-                    <span
-                      class="inline-block h-4 w-4 transform rounded-full bg-white transition-transform"
-                      :class="isDarkMode ? 'translate-x-6' : 'translate-x-1'"
-                    ></span>
-                  </button>
+                  
+                  <!-- Background -->
+                  <div class="flex flex-col gap-2">
+                    <label class="text-xs font-medium text-gray-600">Background</label>
+                    <div class="relative">
+                      <button 
+                        ref="bgColorButtonRef"
+                        @click.stop="openColorPicker('bg', $event)"
+                        class="relative w-12 h-12 rounded-lg overflow-hidden shadow-sm border border-gray-300 hover:border-gray-400 transition-colors cursor-pointer block"
+                        :style="{ backgroundColor: bgColor }"
+                      >
+                        <div class="absolute inset-0 border border-gray-200 rounded-lg pointer-events-none"></div>
+                      </button>
+                      
+                      <!-- Color Picker Popup -->
+                      <ColorPickerPopup
+                        v-if="activeColorPicker === 'bg'"
+                        :initial-color="bgColor"
+                        @apply="(hex) => { emit('update:bgColor', hex); activeColorPicker = null; }"
+                        @cancel="activeColorPicker = null"
+                        :picker-style="bgColorPickerStyle"
+                      />
+                    </div>
+                  </div>
+                  
+                  <!-- Dark Mode -->
+                  <div class="flex flex-col gap-2">
+                    <label class="text-xs font-medium text-gray-600">Dark Mode</label>
+                    <button
+                      @click="toggleDarkMode"
+                      class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                      :class="isDarkMode ? 'bg-indigo-600' : 'bg-gray-300'"
+                      role="switch"
+                      :aria-checked="isDarkMode"
+                    >
+                      <span
+                        class="inline-block h-4 w-4 transform rounded-full bg-white transition-transform"
+                        :class="isDarkMode ? 'translate-x-6' : 'translate-x-1'"
+                      ></span>
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>

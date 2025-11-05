@@ -1,7 +1,6 @@
 <template>
-  <FontPreviewer />
+  <router-view />
 </template>
 
 <script setup>
-import FontPreviewer from './components/FontPreviewer.vue'
 </script>

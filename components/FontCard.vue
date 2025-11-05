@@ -1,12 +1,12 @@
 <template>
-  <div class="bg-white rounded-lg shadow-md border border-gray-200 p-4 hover:shadow-lg transition-shadow flex flex-col h-full" :class="{ 'border-indigo-500 bg-indigo-50': selected }">
+  <div class="bg-white rounded-lg shadow-md border border-gray-200 p-4 hover:shadow-lg transition-shadow flex flex-col h-full cursor-pointer" :class="{ 'border-indigo-500 bg-indigo-50': selected }" @click="goToDetail">
     <!-- Font Header -->
     <div class="flex justify-between items-start mb-3">
       <div>
         <h3 class="text-base font-semibold text-gray-900 mb-1">{{ font.name }}</h3>
         <span class="text-xs text-gray-500">{{ font.weights?.length || 1 }} styles</span>
       </div>
-      <button @click="toggleFavorite(font)" class="p-1 text-gray-400 hover:text-red-500 transition-colors" :class="{ 'text-red-500': selected }" title="Add to favorites">
+      <button @click.stop="toggleFavorite(font)" class="p-1 text-gray-400 hover:text-red-500 transition-colors" :class="{ 'text-red-500': selected }" title="Add to favorites">
         <span class="material-symbols-outlined text-xl">{{ selected ? 'favorite' : 'favorite_border' }}</span>
       </button>
     </div>
@@ -26,7 +26,7 @@
       <div v-if="font.pairsWellWith?.length" class="mt-2">
         <span class="text-xs text-gray-500 block mb-1">Pairs with:</span>
         <div class="flex gap-1 flex-wrap">
-          <button v-for="pair in font.pairsWellWith.slice(0, 2)" :key="pair" class="px-2 py-0.5 text-xs bg-indigo-50 text-indigo-700 rounded border border-indigo-200 hover:bg-indigo-100 transition-colors" @click="selectPairing(pair)">
+          <button v-for="pair in font.pairsWellWith.slice(0, 2)" :key="pair" class="px-2 py-0.5 text-xs bg-indigo-50 text-indigo-700 rounded border border-indigo-200 hover:bg-indigo-100 transition-colors" @click.stop="selectPairing(pair)">
             {{ pair }}
           </button>
         </div>
@@ -34,7 +34,7 @@
     </div>
 
     <!-- Action Buttons -->
-    <div class="flex justify-end items-center gap-2 pt-3 border-t border-gray-200 mt-auto">
+    <div class="flex justify-end items-center gap-2 pt-3 border-t border-gray-200 mt-auto" @click.stop>
       <button class="px-3 py-1.5 border border-gray-300 rounded bg-white text-gray-700 hover:bg-gray-50 transition-colors font-medium text-sm flex items-center justify-center" @click="togglePreview" title="Preview">
         Aa
       </button>
@@ -52,13 +52,23 @@
 </template>
 
 <script setup>
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
+
 const props = defineProps([
   'font', 'fontSize', 'fontWeight', 'lineHeight', 'letterSpacing',
   'textColor', 'bgColor', 'sampleText', 'selected', 'isInComparison',
-  'copyFont', 'getCustomFilename', 'toggleFavorite', 'toggleCompare', 'getContrastLevel'
+  'copyFont', 'getCustomFilename', 'toggleFavorite', 'toggleCompare', 'getContrastLevel', 'showFontInfo'
 ])
 
-const emit = defineEmits(['togglePreview', 'selectPairing', 'quickPair'])
+const emit = defineEmits(['togglePreview', 'selectPairing', 'quickPair', 'addToRecentlyViewed'])
+
+function goToDetail() {
+  emit('addToRecentlyViewed', props.font.name)
+  // Use nextTick to ensure the event handler completes before navigation
+  router.push(`/font/${encodeURIComponent(props.font.name)}`)
+}
 
 function togglePreview() {
   emit('togglePreview', props.font)

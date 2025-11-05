@@ -6,8 +6,8 @@
         <h3 class="text-base font-semibold text-gray-900 mb-1">{{ font.name }}</h3>
         <span class="text-xs text-gray-500">{{ font.weights?.length || 1 }} styles</span>
       </div>
-      <button @click.stop="toggleFavorite(font)" class="p-1 text-gray-400 hover:text-red-500 transition-colors" :class="{ 'text-red-500': selected }" title="Add to favorites">
-        <span class="material-symbols-outlined text-xl">{{ selected ? 'favorite' : 'favorite_border' }}</span>
+      <button @click.stop="toggleFavorite(font)" class="tooltip-wrapper p-1 text-gray-400 hover:text-red-500 transition-colors flex items-center justify-center" :class="{ 'text-red-500': selected }" :data-tooltip="selected ? 'Remove from favorites' : 'Add to favorites'">
+        <span class="material-symbols-outlined text-xl leading-none">{{ selected ? 'favorite' : 'favorite_border' }}</span>
       </button>
     </div>
 
@@ -35,17 +35,17 @@
 
     <!-- Action Buttons -->
     <div class="flex justify-end items-center gap-2 pt-3 border-t border-gray-200 mt-auto" @click.stop>
-      <button class="px-3 py-1.5 border border-gray-300 rounded bg-white text-gray-700 hover:bg-gray-50 transition-colors font-medium text-sm flex items-center justify-center" @click="togglePreview" title="Preview">
-        Aa
+      <button class="tooltip-wrapper h-9 w-9 p-0 border border-gray-300 rounded bg-white text-gray-700 hover:bg-gray-50 transition-colors font-medium text-sm flex items-center justify-center" @click="togglePreview" data-tooltip="Preview font weights">
+        <span class="leading-none">Aa</span>
       </button>
-      <button @click="copyFont(font)" class="p-1.5 border border-gray-300 rounded bg-white text-gray-600 hover:bg-gray-50 transition-colors flex items-center justify-center" title="Copy">
-        <span class="material-symbols-outlined text-lg">content_copy</span>
+      <button @click="copyFont(font)" class="tooltip-wrapper h-9 w-9 p-0 border border-gray-300 rounded bg-white text-gray-600 hover:bg-gray-50 transition-colors flex items-center justify-center" data-tooltip="Copy font name">
+        <span class="material-symbols-outlined text-lg leading-none">content_copy</span>
       </button>
-      <a :href="font.url" :download="getCustomFilename(font)" class="p-1.5 border border-gray-300 rounded bg-white text-gray-600 hover:bg-gray-50 transition-colors flex items-center justify-center" title="Download">
-        <span class="material-symbols-outlined text-lg">download</span>
+      <a :href="font.url" :download="getCustomFilename(font)" class="tooltip-wrapper h-9 w-9 p-0 border border-gray-300 rounded bg-white text-gray-600 hover:bg-gray-50 transition-colors flex items-center justify-center" data-tooltip="Download font">
+        <span class="material-symbols-outlined text-lg leading-none">download</span>
       </a>
-      <button @click="toggleCompare(font)" class="p-1.5 border border-gray-300 rounded bg-white text-gray-600 hover:bg-gray-50 transition-colors flex items-center justify-center" :class="{ 'border-indigo-500 bg-indigo-50 text-indigo-700': isInComparison }" :title="isInComparison ? 'Remove from comparison' : 'Add to comparison'">
-        <span class="material-symbols-outlined text-lg">{{ isInComparison ? 'remove_circle' : 'compare' }}</span>
+      <button @click="toggleCompare(font)" class="tooltip-wrapper h-9 w-9 p-0 border border-gray-300 rounded bg-white text-gray-600 hover:bg-gray-50 transition-colors flex items-center justify-center" :class="{ 'border-indigo-500 bg-indigo-50 text-indigo-700': isInComparison }" :data-tooltip="isInComparison ? 'Remove from comparison' : 'Add to comparison'">
+        <span class="material-symbols-outlined text-lg leading-none">{{ isInComparison ? 'remove_circle' : 'compare' }}</span>
       </button>
     </div>
   </div>

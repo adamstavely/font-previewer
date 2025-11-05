@@ -1310,6 +1310,94 @@
   -webkit-font-smoothing: antialiased;
 }
 
+/* Ensure Material Symbols icons are perfectly centered in buttons */
+button .material-symbols-outlined,
+a .material-symbols-outlined {
+  margin: 0;
+  padding: 0;
+  vertical-align: middle;
+  line-height: 1;
+}
+
+/* Ensure buttons properly center their content */
+button.tooltip-wrapper,
+a.tooltip-wrapper {
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+button.tooltip-wrapper > span,
+a.tooltip-wrapper > span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Tooltip Styles */
+.tooltip-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.tooltip-wrapper::before {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-8px);
+  padding: 6px 10px;
+  background-color: #1f2937;
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+  border-radius: 6px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  z-index: 1000;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.tooltip-wrapper::after {
+  content: '';
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-2px);
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 5px solid #1f2937;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  z-index: 1000;
+}
+
+.tooltip-wrapper:hover::before,
+.tooltip-wrapper:hover::after {
+  opacity: 1;
+  transform: translateX(-50%) translateY(-4px);
+}
+
+.tooltip-wrapper:hover::after {
+  transform: translateX(-50%) translateY(2px);
+}
+
+/* Dark mode tooltip */
+.dark .tooltip-wrapper::before {
+  background-color: #f3f4f6;
+  color: #1f2937;
+}
+
+.dark .tooltip-wrapper::after {
+  border-top-color: #f3f4f6;
+}
+
 /* Font Grid */
 .font-grid {
   display: grid;

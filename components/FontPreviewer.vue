@@ -7,7 +7,7 @@
           <div>
             <h1 class="text-2xl font-bold text-gray-900 flex items-center gap-2">
               <span class="material-symbols-outlined text-indigo-600 text-3xl">text_fields</span>
-              Font Previewer
+              Fonts
             </h1>
           </div>
           <div class="flex items-center gap-2">
@@ -696,16 +696,154 @@
     </div>
 
     <!-- A/B Testing Modal -->
-    <div v-if="showABTesting && abTestFont1 && abTestFont2" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm" @click="showABTesting = false">
-      <div class="bg-white rounded-lg shadow-xl max-w-4xl w-full mx-4 max-h-[90vh] overflow-y-auto relative" @click.stop>
+    <div v-if="showABTesting && abTestFont1 && abTestFont2" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm" @click="showABTesting = false; activeABColorPicker = null">
+      <div class="bg-white rounded-lg shadow-xl max-w-5xl w-full mx-4 max-h-[90vh] overflow-y-auto relative" @click.stop>
         <div class="flex items-center justify-between p-6 border-b border-gray-200 sticky top-0 bg-white z-10">
-          <h3 class="text-xl font-bold text-gray-900">A/B Font Testing</h3>
+          <div class="flex-1">
+            <h3 class="text-xl font-bold text-gray-900 flex items-center gap-2 mb-1">
+              <span class="material-symbols-outlined text-indigo-600">compare</span>
+              A/B Font Testing
+            </h3>
+            <p class="text-sm text-gray-600 ml-9">Compare these fonts side-by-side. You can adjust typography settings and see how both fonts respond.</p>
+          </div>
           <button @click="showABTesting = false" class="p-2 hover:bg-gray-100 rounded-lg transition-colors">
             <span class="material-symbols-outlined text-gray-600">close</span>
           </button>
         </div>
         
-        <div class="p-6">
+        <div class="p-6" @click="activeABColorPicker = null">
+          <!-- Typography Controls -->
+          <div class="mb-6 p-4 bg-gray-50 rounded-lg border border-gray-200">
+            <h4 class="text-sm font-semibold text-gray-700 mb-4">Typography Settings</h4>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <!-- Font Size -->
+              <div class="flex flex-col gap-2">
+                <label class="text-xs font-medium text-gray-600">Size</label>
+                <div class="flex items-center gap-2">
+                  <input 
+                    type="range" 
+                    v-model.number="fontSize" 
+                    min="12" 
+                    max="72" 
+                    class="flex-1 h-1.5 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-indigo-600"
+                  />
+                  <span class="text-xs text-gray-500 w-12 text-right">{{ fontSize }}px</span>
+                </div>
+              </div>
+              
+              <!-- Font Weight -->
+              <div class="flex flex-col gap-2">
+                <label class="text-xs font-medium text-gray-600">Weight</label>
+                <select v-model.number="fontWeight" class="w-full px-2.5 py-1.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-white">
+                  <option value="100">Thin (100)</option>
+                  <option value="200">Extra Light (200)</option>
+                  <option value="300">Light (300)</option>
+                  <option value="400">Regular (400)</option>
+                  <option value="500">Medium (500)</option>
+                  <option value="600">Semi-Bold (600)</option>
+                  <option value="700">Bold (700)</option>
+                  <option value="800">Extra Bold (800)</option>
+                  <option value="900">Black (900)</option>
+                </select>
+              </div>
+              
+              <!-- Line Height -->
+              <div class="flex flex-col gap-2">
+                <label class="text-xs font-medium text-gray-600">Line Height</label>
+                <div class="flex items-center gap-2">
+                  <input 
+                    type="range" 
+                    v-model.number="lineHeight" 
+                    min="1" 
+                    max="2" 
+                    step="0.1" 
+                    class="flex-1 h-1.5 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-indigo-600"
+                  />
+                  <span class="text-xs text-gray-500 w-12 text-right">{{ lineHeight }}</span>
+                </div>
+              </div>
+              
+              <!-- Letter Spacing -->
+              <div class="flex flex-col gap-2">
+                <label class="text-xs font-medium text-gray-600">Letter Spacing</label>
+                <div class="flex items-center gap-2">
+                  <input 
+                    type="range" 
+                    v-model.number="letterSpacing" 
+                    min="-2" 
+                    max="5" 
+                    step="0.1" 
+                    class="flex-1 h-1.5 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-indigo-600"
+                  />
+                  <span class="text-xs text-gray-500 w-12 text-right">{{ letterSpacing }}px</span>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Color Controls -->
+            <div class="grid grid-cols-2 gap-4 mt-4 pt-4 border-t border-gray-200">
+              <!-- Text Color -->
+              <div class="flex flex-col gap-2">
+                <label class="text-xs font-medium text-gray-600">Text Color</label>
+                <div class="relative">
+                  <button 
+                    ref="abTextColorButtonRef"
+                    @click.stop="openABColorPicker('text', $event)"
+                    class="relative w-12 h-12 rounded-lg overflow-hidden shadow-sm border border-gray-300 hover:border-gray-400 transition-colors cursor-pointer block"
+                    :style="{ backgroundColor: textColor }"
+                  >
+                    <div class="absolute inset-0 border border-gray-200 rounded-lg pointer-events-none"></div>
+                  </button>
+                  
+                  <!-- Color Picker Popup -->
+                  <ColorPickerPopup
+                    v-if="activeABColorPicker === 'text'"
+                    :initial-color="textColor"
+                    @apply="(hex) => { textColor = hex; activeABColorPicker = null; }"
+                    @cancel="activeABColorPicker = null"
+                    :picker-style="abTextColorPickerStyle"
+                  />
+                </div>
+              </div>
+              
+              <!-- Background Color -->
+              <div class="flex flex-col gap-2">
+                <label class="text-xs font-medium text-gray-600">Background Color</label>
+                <div class="relative">
+                  <button 
+                    ref="abBgColorButtonRef"
+                    @click.stop="openABColorPicker('bg', $event)"
+                    class="relative w-12 h-12 rounded-lg overflow-hidden shadow-sm border border-gray-300 hover:border-gray-400 transition-colors cursor-pointer block"
+                    :style="{ backgroundColor: bgColor }"
+                  >
+                    <div class="absolute inset-0 border border-gray-200 rounded-lg pointer-events-none"></div>
+                  </button>
+                  
+                  <!-- Color Picker Popup -->
+                  <ColorPickerPopup
+                    v-if="activeABColorPicker === 'bg'"
+                    :initial-color="bgColor"
+                    @apply="(hex) => { bgColor = hex; activeABColorPicker = null; }"
+                    @cancel="activeABColorPicker = null"
+                    :picker-style="abBgColorPickerStyle"
+                  />
+                </div>
+              </div>
+            </div>
+            
+            <!-- Sample Text -->
+            <div class="mt-4 pt-4 border-t border-gray-200">
+              <label class="text-xs font-medium text-gray-600 mb-2 block">Sample Text</label>
+              <textarea 
+                v-model="sampleText" 
+                class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-white resize-none"
+                rows="2"
+                placeholder="Enter sample text..."
+              ></textarea>
+            </div>
+          </div>
+          
+          <!-- Font Comparison -->
           <div class="grid grid-cols-2 gap-6">
             <div class="border-r border-gray-200 pr-6">
               <div class="text-sm font-semibold text-gray-600 mb-3">Font A: {{ abTestFont1.name }}</div>
@@ -721,12 +859,6 @@
                 {{ sampleText }}
               </div>
               <div class="text-xs text-gray-500">{{ abTestFont2.tags?.join(', ') }}</div>
-            </div>
-          </div>
-          
-          <div class="mt-6 p-4 bg-indigo-50 rounded-lg">
-            <div class="text-sm text-gray-700">
-              <strong>Tip:</strong> Compare these fonts side-by-side. You can adjust typography settings and see how both fonts respond.
             </div>
           </div>
         </div>
@@ -919,8 +1051,8 @@
                 <span class="material-symbols-outlined">compare</span>
                 Export JSON
               </button>
-              <button @click="exportToDesignTool('sketch')" class="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition-colors">
-                Sketch
+              <button @click="exportToDesignTool('adobe')" class="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors">
+                Adobe
               </button>
             </div>
           </div>
@@ -1420,6 +1552,7 @@ import { useRoute } from 'vue-router'
 import FontControls from './FontControls.vue'
 import FontCard from './FontCard.vue'
 import ComparisonView from './ComparisonView.vue'
+import ColorPickerPopup from './ColorPickerPopup.vue'
 import { loadFont } from './useFontLoader'
 import { useLocalStorage } from './useLocalStorage'
 import { calculateContrast } from './useContrast'
@@ -1477,6 +1610,11 @@ const selectedFontForExamples = ref('')
 const selectedFontForLicense = ref('')
 const abTestFont1 = ref(null)
 const abTestFont2 = ref(null)
+const activeABColorPicker = ref(null)
+const abTextColorButtonRef = ref(null)
+const abBgColorButtonRef = ref(null)
+const abTextColorPickerStyle = ref({})
+const abBgColorPickerStyle = ref({})
 const fontStack = ref(['Arial', 'Helvetica', 'sans-serif'])
 const selectedFontForStack = ref('')
 const newFontInStack = ref('')
@@ -1800,6 +1938,63 @@ function startABTest(font1, font2) {
   showABTesting.value = true
 }
 
+function openABColorPicker(type, event) {
+  if (activeABColorPicker.value === type) {
+    activeABColorPicker.value = null
+    return
+  }
+  
+  activeABColorPicker.value = type
+  
+  // Get button reference
+  const buttonRef = type === 'text' ? abTextColorButtonRef.value : abBgColorButtonRef.value
+  if (!buttonRef) return
+  
+  // Calculate position relative to viewport
+  const rect = buttonRef.getBoundingClientRect()
+  const pickerWidth = 280
+  const pickerHeight = 500 // Approximate height of color picker
+  const gap = 16
+  
+  // Try positioning to the right first
+  let left = rect.right + gap
+  let top = rect.top
+  
+  // If there's not enough space on the right, show on the left
+  if (left + pickerWidth > window.innerWidth) {
+    left = rect.left - pickerWidth - gap
+  }
+  
+  // If there's not enough space below, position above
+  if (top + pickerHeight > window.innerHeight) {
+    top = rect.bottom - pickerHeight
+  }
+  
+  // Ensure it doesn't go off-screen horizontally
+  left = Math.max(gap, Math.min(left, window.innerWidth - pickerWidth - gap))
+  
+  // Ensure it doesn't go off-screen vertically
+  top = Math.max(gap, Math.min(top, window.innerHeight - pickerHeight - gap))
+  
+  // If still doesn't fit, center it horizontally
+  if (top + pickerHeight > window.innerHeight) {
+    top = Math.max(gap, (window.innerHeight - pickerHeight) / 2)
+  }
+  
+  const style = {
+    left: `${left}px`,
+    top: `${top}px`,
+    width: `${pickerWidth}px`,
+    position: 'fixed', // Use fixed positioning to stay within viewport
+  }
+  
+  if (type === 'text') {
+    abTextColorPickerStyle.value = style
+  } else {
+    abBgColorPickerStyle.value = style
+  }
+}
+
 function findSimilarFonts(font) {
   // Find fonts with similar tags and characteristics
   const similar = fontData.filter(f => {
@@ -1997,17 +2192,64 @@ function exportToDesignTool(format) {
   let output = ''
   if (format === 'figma') {
     output = fontsToExport.map(f => `Font: ${f.name}\nURL: ${f.url}`).join('\n\n')
-  } else if (format === 'sketch') {
-    output = JSON.stringify({ fonts: fontsToExport.map(f => ({ name: f.name, url: f.url })) }, null, 2)
+  } else if (format === 'adobe') {
+    // Adobe Creative Cloud compatible format
+    const adobeFormat = {
+      version: '1.0',
+      metadata: {
+        created: new Date().toISOString(),
+        source: 'Font Previewer',
+        format: 'adobe-creative-cloud',
+        application: 'Adobe Creative Cloud'
+      },
+      fonts: fontsToExport.map(f => {
+        // Extract font family name (remove style/weight suffixes)
+        const familyName = f.name.split(/\s*(?:Regular|Bold|Italic|Light|Medium|Black|Thin|Extra|Semi|Condensed|Extended)/i)[0].trim()
+        
+        // Get all available weights
+        const weights = f.weights || ['400']
+        const weightNames = {
+          '100': 'Thin',
+          '200': 'Extra Light',
+          '300': 'Light',
+          '400': 'Regular',
+          '500': 'Medium',
+          '600': 'Semi Bold',
+          '700': 'Bold',
+          '800': 'Extra Bold',
+          '900': 'Black'
+        }
+        
+        // Create variants array with all weights
+        const variants = weights.map(w => ({
+          weight: parseInt(w),
+          style: weightNames[w] || 'Regular',
+          url: f.url
+        }))
+        
+        return {
+          family: familyName,
+          displayName: f.name,
+          category: f.tags?.[0] || 'sans-serif',
+          source: 'google-fonts',
+          url: f.url,
+          subsets: f.supports || ['latin'],
+          variants: variants,
+          defaultWeight: parseInt(weights[0] || '400'),
+          defaultStyle: weightNames[weights[0]] || 'Regular'
+        }
+      })
+    }
+    output = JSON.stringify(adobeFormat, null, 2)
   } else if (format === 'xd') {
     output = fontsToExport.map(f => `${f.name}: ${f.url}`).join('\n')
   }
   
-  const blob = new Blob([output], { type: 'text/plain' })
+  const blob = new Blob([output], { type: format === 'adobe' ? 'application/json' : 'text/plain' })
   const url = URL.createObjectURL(blob)
   const a = document.createElement('a')
   a.href = url
-  a.download = `fonts-export-${format}.txt`
+  a.download = `fonts-export-${format}.${format === 'adobe' ? 'json' : 'txt'}`
   a.click()
   URL.revokeObjectURL(url)
 }

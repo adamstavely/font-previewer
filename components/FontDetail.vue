@@ -6,7 +6,7 @@
         <div class="flex items-center justify-between">
           <router-link to="/" class="flex items-center gap-3 hover:opacity-80 transition-opacity">
             <span class="material-symbols-outlined text-indigo-600">arrow_back</span>
-            <h1 class="text-2xl font-bold text-gray-900">Font Previewer</h1>
+            <h1 class="text-2xl font-bold text-gray-900">Fonts</h1>
           </router-link>
         </div>
       </div>
